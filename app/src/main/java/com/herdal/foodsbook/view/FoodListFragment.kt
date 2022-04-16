@@ -1,10 +1,13 @@
 package com.herdal.foodsbook.view
 
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.herdal.foodsbook.R
@@ -36,5 +39,17 @@ class FoodListFragment : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
+
+        observeLiveData()
+    }
+
+    fun observeLiveData() {
+        viewModel.foods.observe(viewLifecycleOwner, Observer { foods ->
+            foods?.let {
+                recyclerView.visibility = View.VISIBLE
+                adapter.updateFoodList(foods)
+            }
+        })
+
     }
 }
