@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.herdal.foodsbook.R
 import com.herdal.foodsbook.adapter.FoodAdapter
 import com.herdal.foodsbook.viewmodel.FoodListViewModel
+import kotlinx.android.synthetic.main.fragment_food_list.*
 
 class FoodListFragment : Fragment() {
 
@@ -31,5 +33,8 @@ class FoodListFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(FoodListViewModel::class.java)
         viewModel.refreshData()
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
     }
 }
