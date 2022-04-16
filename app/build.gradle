@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def lifeCycleExtensionVersion = '1.1.1'
     def retrofitVersion = '2.9.0'
     def glideVersion = '4.11.0'
