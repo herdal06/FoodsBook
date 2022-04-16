@@ -50,6 +50,28 @@ class FoodListFragment : Fragment() {
                 adapter.updateFoodList(foods)
             }
         })
-
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { error ->
+            error?.let {
+                if(it) {
+                    textViewErrorMessage.visibility = View.VISIBLE
+                    recyclerView.visibility = View.GONE
+                }
+                else {
+                    textViewErrorMessage.visibility = View.GONE
+                }
+            }
+        })
+        viewModel.loadingBar.observe(viewLifecycleOwner, Observer { loading ->
+            loading?.let {
+                if(it) {
+                    progressBar.visibility = View.VISIBLE
+                    textViewErrorMessage.visibility = View.GONE
+                    recyclerView.visibility = View.GONE
+                }
+                else {
+                    progressBar.visibility = View.GONE
+                }
+            }
+        })
     }
 }
