@@ -8,6 +8,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.herdal.foodsbook.R
 import com.herdal.foodsbook.model.Food
+import com.herdal.foodsbook.util.downloadImage
+import com.herdal.foodsbook.util.getPlaceHolder
 import com.herdal.foodsbook.view.FoodListFragmentDirections
 import kotlinx.android.synthetic.main.food_recycler_row.view.*
 
@@ -24,11 +26,13 @@ class FoodAdapter(private val foodList: ArrayList<Food>) : RecyclerView.Adapter<
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         holder.itemView.foodName.text = foodList.get(position).name
         holder.itemView.foodCalorie.text = foodList.get(position).calorie
-        // todo : add image
+
         holder.itemView.setOnClickListener {
             val action = FoodListFragmentDirections.actionFoodListFragmentToFoodDetailsFragment(0)
             Navigation.findNavController(it).navigate(action)
         }
+
+        holder.itemView.imageView.downloadImage(foodList.get(position).image, getPlaceHolder(holder.itemView.context))
     }
 
     override fun getItemCount(): Int {
