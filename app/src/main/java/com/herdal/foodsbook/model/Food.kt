@@ -13,7 +13,7 @@ data class Food(
     @ColumnInfo(name = "kalori")
     @SerializedName("kalori")
     val calorie: String?,
-    @ColumnInfo(name = "first_name")
+    @ColumnInfo(name = "karbonhidrat")
     @SerializedName("karbonhidrat")
     val carbohydrate: String?,
     @ColumnInfo(name = "protein")
