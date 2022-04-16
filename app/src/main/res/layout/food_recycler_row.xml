@@ -37,13 +37,12 @@
                 ></TextView>
 
             <TextView
-                android:id="@+id/foodCalory"
+                android:id="@+id/foodCalorie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Food Calory"
-                android:textSize="18dp"
                 android:layout_margin="5dp"
-                ></TextView>
+                android:text="Food Calorie"
+                android:textSize="18dp"></TextView>
 
         </LinearLayout>
     </LinearLayout>
