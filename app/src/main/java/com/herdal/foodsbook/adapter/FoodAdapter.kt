@@ -35,3 +35,4 @@ class FoodAdapter(private val foodList: ArrayList<Food>) : RecyclerView.Adapter<
         notifyDataSetChanged()
     }
 }
+
