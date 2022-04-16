@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/food_nav"
+    app:startDestination="@id/foodListFragment">
+
+    <fragment
+        android:id="@+id/foodListFragment"
+        android:name="com.herdal.foodsbook.FoodListFragment"
+        android:label="FoodListFragment" >
+        <action
+            android:id="@+id/action_foodListFragment_to_foodDetailsFragment"
+            app:destination="@id/foodDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/foodDetailsFragment"
+        android:name="com.herdal.foodsbook.FoodDetailsFragment"
+        android:label="FoodDetailsFragment" >
+        <action
+            android:id="@+id/action_foodDetailsFragment_to_foodListFragment"
+            app:destination="@id/foodListFragment" />
+    </fragment>
+</navigation>
