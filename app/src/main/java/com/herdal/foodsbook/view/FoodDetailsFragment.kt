@@ -1,12 +1,11 @@
-package com.herdal.foodsbook
+package com.herdal.foodsbook.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_food_details.*
+import com.herdal.foodsbook.R
 
 class FoodDetailsFragment : Fragment() {
 
@@ -26,11 +25,6 @@ class FoodDetailsFragment : Fragment() {
 
         arguments?.let {
             foodId = FoodDetailsFragmentArgs.fromBundle(it).foodId // test
-        }
-
-        buttonFoodDetail.setOnClickListener {
-            val action = FoodDetailsFragmentDirections.actionFoodDetailsFragmentToFoodListFragment()
-            Navigation.findNavController(it).navigate(action)
         }
     }
 }
