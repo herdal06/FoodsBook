@@ -31,9 +31,7 @@ class FoodListViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object: DisposableSingleObserver<List<Food>>() {
                     override fun onSuccess(t: List<Food>) {
-                        foods.value = t
-                        errorMessage.value = false
-                        loadingBar.value = false
+
                     }
 
                     override fun onError(e: Throwable) {
@@ -43,5 +41,11 @@ class FoodListViewModel : ViewModel() {
                     }
                 })
         )
+    }
+
+    private fun showFoods(foodList: List<Food>) {
+        foods.value = foodList
+        errorMessage.value = false
+        loadingBar.value = false
     }
 }
