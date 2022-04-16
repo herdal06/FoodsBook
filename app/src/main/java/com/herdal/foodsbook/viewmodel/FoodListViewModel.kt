@@ -13,7 +13,6 @@ class FoodListViewModel : ViewModel() {
         val apple = Food("apple","100","10","5","1","image")
         val strawberry = Food("strawberry","100","10","5","1","image")
         val watermelon = Food("watermelon","100","10","5","1","image")
-
         val foodList = arrayListOf<Food>(apple,strawberry,watermelon)
         foods.value = foodList
         errorMessage.value = false
