@@ -19,5 +19,9 @@
         <action
             android:id="@+id/action_foodDetailsFragment_to_foodListFragment"
             app:destination="@id/foodListFragment" />
+        <argument
+            android:name="foodId"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>
