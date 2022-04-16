@@ -3,19 +3,45 @@ package com.herdal.foodsbook.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.herdal.foodsbook.model.Food
+import com.herdal.foodsbook.service.FoodAPIService
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 
 class FoodListViewModel : ViewModel() {
     val foods = MutableLiveData<List<Food>>()
     val errorMessage = MutableLiveData<Boolean>()
     val loadingBar = MutableLiveData<Boolean>()
 
+    private val foodAPIService = FoodAPIService()
+            private var disposable = CompositeDisposable()
+
+    // get data from api. get data from room if a some time has not passed
     fun refreshData() {
-        val apple = Food("apple","100","10","5","1","image")
-        val strawberry = Food("strawberry","100","10","5","1","image")
-        val watermelon = Food("watermelon","100","10","5","1","image")
-        val foodList = arrayListOf<Food>(apple,strawberry,watermelon)
-        foods.value = foodList
-        errorMessage.value = false
-        loadingBar.value = false
+        getDataFromApi()
+    }
+
+    private fun getDataFromApi() {
+        loadingBar.value = true
+
+        disposable.add(
+            foodAPIService.getData()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object: DisposableSingleObserver<List<Food>>() {
+                    override fun onSuccess(t: List<Food>) {
+                        foods.value = t
+                        errorMessage.value = false
+                        loadingBar.value = false
+                    }
+
+                    override fun onError(e: Throwable) {
+                        errorMessage.value = true
+                        loadingBar.value = false
+                        e.printStackTrace()
+                    }
+                })
+        )
     }
 }

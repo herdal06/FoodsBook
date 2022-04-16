@@ -40,6 +40,14 @@ class FoodListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
+        swipeRefreshLayout.setOnRefreshListener {
+            progressBar.visibility = View.VISIBLE
+            textViewErrorMessage.visibility = View.GONE
+            recyclerView.visibility = View.GONE
+            viewModel.refreshData()
+            swipeRefreshLayout.isRefreshing = false
+        }
+
         observeLiveData()
     }
 
