@@ -1,15 +1,19 @@
 package com.herdal.foodsbook.viewmodel
 
-import android.widget.ImageView
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.herdal.foodsbook.model.Food
+import com.herdal.foodsbook.service.FoodDatabase
+import kotlinx.coroutines.launch
 
-class FoodDetailsViewModel : ViewModel() {
+class FoodDetailsViewModel(application: Application) : BaseViewModel(application) {
     val foodLiveData = MutableLiveData<Food>()
 
-    fun getRoomData() {
-        val apple = Food("apple","100","10","5","1","image")
-        foodLiveData.value = apple
+    fun getRoomData(uid: Int) {
+        launch {
+            val dao = FoodDatabase(getApplication()).foodDao()
+            val food = dao.getFood(uid)
+            foodLiveData.value = food
+        }
     }
 }

@@ -31,4 +31,6 @@ class SpecialSharedPreferences {
             putLong(TIME,nanoTime)
         }
     }
+
+    fun getTime() = sharedPreferences?.getLong(TIME,0)
 }

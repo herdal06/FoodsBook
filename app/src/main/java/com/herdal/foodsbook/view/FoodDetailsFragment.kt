@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.herdal.foodsbook.R
 import com.herdal.foodsbook.databinding.FragmentFoodDetailsBinding
 import com.herdal.foodsbook.viewmodel.FoodDetailsViewModel
+import kotlinx.android.synthetic.main.food_recycler_row.*
 import kotlinx.android.synthetic.main.fragment_food_details.*
 
 class FoodDetailsFragment : Fragment() {
@@ -31,12 +32,12 @@ class FoodDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(FoodDetailsViewModel::class.java)
-        viewModel.getRoomData()
-
         arguments?.let {
             foodId = FoodDetailsFragmentArgs.fromBundle(it).foodId // test
         }
+
+        viewModel = ViewModelProviders.of(this).get(FoodDetailsViewModel::class.java)
+        viewModel.getRoomData(foodId)
 
         observeLiveData()
     }

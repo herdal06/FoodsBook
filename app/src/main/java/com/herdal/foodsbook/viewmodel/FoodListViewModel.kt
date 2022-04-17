@@ -1,6 +1,7 @@
 package com.herdal.foodsbook.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.herdal.foodsbook.model.Food
 import com.herdal.foodsbook.service.FoodAPIService
@@ -16,6 +17,7 @@ class FoodListViewModel(application: Application) : BaseViewModel(application) {
     val foods = MutableLiveData<List<Food>>()
     val errorMessage = MutableLiveData<Boolean>()
     val loadingBar = MutableLiveData<Boolean>()
+    private var updateTime = 10 * 60 * 1000 * 1000 * 1000L // nano time. 10 minute
 
     private val foodAPIService = FoodAPIService()
     private var disposable = CompositeDisposable()
@@ -23,7 +25,27 @@ class FoodListViewModel(application: Application) : BaseViewModel(application) {
 
     // get data from api. get data from room if a some time has not passed
     fun refreshData() {
+        val saveTime = specialSharedPreferences.getTime()
+        if(saveTime != null && saveTime != 0L && System.nanoTime() - saveTime <  updateTime) {
+            // get from sqlite
+            getDataFromSqlite()
+        }
+        else {
+            getDataFromApi()
+        }
+    }
+
+    fun refreshFromInternet() {
         getDataFromApi()
+    }
+
+    private fun getDataFromSqlite() {
+        loadingBar.value = true
+        launch {
+            val foodList = FoodDatabase(getApplication()).foodDao().getAllFood()
+            showFoods(foodList)
+            Toast.makeText(getApplication(),"data came from room",Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun getDataFromApi() {
@@ -36,6 +58,7 @@ class FoodListViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object: DisposableSingleObserver<List<Food>>() {
                     override fun onSuccess(foodList: List<Food>) {
                         saveToSQLite(foodList)
+                        Toast.makeText(getApplication(),"data came from api",Toast.LENGTH_LONG).show()
                     }
 
                     override fun onError(e: Throwable) {
