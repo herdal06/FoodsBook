@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.herdal.foodsbook.model.Food
 import com.herdal.foodsbook.service.FoodAPIService
 import com.herdal.foodsbook.service.FoodDatabase
+import com.herdal.foodsbook.util.SpecialSharedPreferences
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -17,7 +18,8 @@ class FoodListViewModel(application: Application) : BaseViewModel(application) {
     val loadingBar = MutableLiveData<Boolean>()
 
     private val foodAPIService = FoodAPIService()
-            private var disposable = CompositeDisposable()
+    private var disposable = CompositeDisposable()
+    private val specialSharedPreferences = SpecialSharedPreferences(getApplication())
 
     // get data from api. get data from room if a some time has not passed
     fun refreshData() {
@@ -63,5 +65,7 @@ class FoodListViewModel(application: Application) : BaseViewModel(application) {
             }
             showFoods(foodList)
         }
+        specialSharedPreferences.saveTime(System.nanoTime())
+
     }
 }
