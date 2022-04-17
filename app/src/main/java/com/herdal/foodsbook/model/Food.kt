@@ -27,5 +27,5 @@ data class Food(
     val image: String?
     ) {
     @PrimaryKey(autoGenerate = true)
-    val uid: Int = 0
+    var uid: Int = 0
 }

@@ -1,15 +1,17 @@
 package com.herdal.foodsbook.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.herdal.foodsbook.model.Food
 import com.herdal.foodsbook.service.FoodAPIService
+import com.herdal.foodsbook.service.FoodDatabase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 
-class FoodListViewModel : ViewModel() {
+class FoodListViewModel(application: Application) : BaseViewModel(application) {
     val foods = MutableLiveData<List<Food>>()
     val errorMessage = MutableLiveData<Boolean>()
     val loadingBar = MutableLiveData<Boolean>()
@@ -30,8 +32,8 @@ class FoodListViewModel : ViewModel() {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object: DisposableSingleObserver<List<Food>>() {
-                    override fun onSuccess(t: List<Food>) {
-
+                    override fun onSuccess(foodList: List<Food>) {
+                        saveToSQLite(foodList)
                     }
 
                     override fun onError(e: Throwable) {
@@ -47,5 +49,19 @@ class FoodListViewModel : ViewModel() {
         foods.value = foodList
         errorMessage.value = false
         loadingBar.value = false
+    }
+
+    private fun saveToSQLite(foodList: List<Food>) {
+        launch {
+            val dao = FoodDatabase(getApplication()).foodDao()
+            dao.deleteAllFood() // clear db
+            val uidList = dao.insertAll(*foodList.toTypedArray())
+            var i = 0
+            while(i < foodList.size) {
+                foodList[i].uid = uidList[i].toInt()
+                i += 1
+            }
+            showFoods(foodList)
+        }
     }
 }
